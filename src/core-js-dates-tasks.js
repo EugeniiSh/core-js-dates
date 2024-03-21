@@ -35,8 +35,8 @@ function dateToTimestamp(date) {
 function getTime(date) {
   const tempDate = date.toString();
   return tempDate.split(' ')[4];
-  // return date.toLocaleTimeString('en-GB');
 }
+// return date.toLocaleTimeString('en-GB');
 
 /**
  * Returns the name of the day of the week for a given date string.
@@ -49,8 +49,9 @@ function getTime(date) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const mayDate = new Date(date);
+  return new Intl.DateTimeFormat('en-GB', { weekday: 'long' }).format(mayDate);
 }
 
 /**
@@ -64,8 +65,18 @@ function getDayName(/* date */) {
  * Date('2024-02-13T00:00:00Z') => Date('2024-02-16T00:00:00Z')
  * Date('2024-02-16T00:00:00Z') => Date('2024-02-23T00:00:00Z')
  */
-function getNextFriday(/* date */) {
-  throw new Error('Not implemented');
+function getNextFriday(date) {
+  const newDate = date;
+  let timeShift = 7;
+  if (date.getDay() === 6) {
+    timeShift = 6;
+  }
+  if (date.getDay() < 5) {
+    timeShift = 5 - date.getDay();
+  }
+
+  newDate.setDate(newDate.getDate() + timeShift);
+  return newDate;
 }
 
 /**
@@ -79,8 +90,10 @@ function getNextFriday(/* date */) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  const newDate = new Date(year, month);
+  newDate.setDate(0);
+  return newDate.getDate();
 }
 
 /**
@@ -94,8 +107,10 @@ function getCountDaysInMonth(/* month, year */) {
  * '2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z'  => 2
  * '2024-02-01T00:00:00.000Z', '2024-02-12T00:00:00.000Z'  => 12
  */
-function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
-  throw new Error('Not implemented');
+function getCountDaysOnPeriod(dateStart, dateEnd) {
+  const oneday = 1000 * 60 * 60 * 24;
+  const result = new Date(dateEnd) - new Date(dateStart);
+  return result / oneday + 1;
 }
 
 /**
